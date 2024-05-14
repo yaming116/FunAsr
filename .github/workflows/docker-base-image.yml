@@ -1,10 +1,4 @@
-name: Docker Image CI
-
-#on:
-#  push:
-#    branches: [ "main" ]
-#  pull_request:
-#    branches: [ "main" ]
+name: Docker Base Image CI
 
 jobs:
 
@@ -38,12 +32,12 @@ jobs:
     - uses: mr-smithers-excellent/docker-build-push@v6
       name: Build & push Docker image
       with:
-        image: yaming116/fun-asr
+        image: yaming116/fun-asr-base
         labels: |-
           org.opencontainers.image.source=https://github.com/${{ github.repository }}
         tags: ${{ steps.t1.outputs.year }}-${{ steps.t1.outputs.month }}-${{ steps.t1.outputs.day }}, latest
         registry: docker.io
-        dockerfile: Dockerfile
+        dockerfile: Dockerfile.base
         multiPlatform: true
         platform: linux/amd64,linux/arm64
         username: ${{ secrets.DOCKER_USERNAME }}

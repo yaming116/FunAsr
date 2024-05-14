@@ -5,3 +5,4 @@ aiofiles
 uvicorn
 requests
 flask
+torchaudio
