@@ -1,4 +1,4 @@
-FROM python:3.11.9-slim-bullseye
+FROM yaming116/fun-asr:latest
 
 EXPOSE 5001
 

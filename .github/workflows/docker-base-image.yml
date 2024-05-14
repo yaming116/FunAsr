@@ -1,5 +1,7 @@
 name: Docker Base Image CI
 
+on: workflow_call
+
 jobs:
 
   build:
