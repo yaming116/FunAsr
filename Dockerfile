@@ -19,7 +19,8 @@ RUN mkdir -p /funAsr/hub \
     && git clone https://www.modelscope.cn/iic/speech_seaco_paraformer_large_asr_nat-zh-cn-16k-common-vocab8404-pytorch.git \
     && git clone https://www.modelscope.cn/iic/speech_fsmn_vad_zh-cn-16k-common-pytorch.git \
     && git clone https://www.modelscope.cn/iic/punc_ct-transformer_zh-cn-common-vocab272727-pytorch.git \
-    && git clone https://www.modelscope.cn/iic/speech_campplus_sv_zh-cn_16k-common.git
+    && git clone https://www.modelscope.cn/iic/speech_campplus_sv_zh-cn_16k-common.git \
+    && ls -all
 
 #COPY requirements.txt requirements.txt
 RUN pip install flask requests funasr modelscope
