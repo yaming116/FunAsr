@@ -1,4 +1,4 @@
-FROM python:3.11.9-slim-bullseye
+FROM yaming116/touch-base:latest
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -20,6 +20,5 @@ WORKDIR /funAsr
 COPY . .
 
 RUN pip install -r requirements.txt
-
 
 CMD ["python" , "app.py"]
