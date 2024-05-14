@@ -1,6 +1,8 @@
 name: Docker Base Image CI
 
-on: workflow_call
+on:
+  watch:
+    types: [started]
 
 jobs:
 
