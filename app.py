@@ -91,6 +91,7 @@ def upload():
 @app.route('/api',methods=['GET','POST'])
 def api():
     source_file = ''
+    is_delete = None
     try:
         # 获取上传的文件
 
@@ -98,8 +99,11 @@ def api():
         if request.form.get('wav_name') is not None:
             source_file = os.path.join(TMP_DIR, request.form.get('wav_name') )
 
+        is_delete = request.form.get('is_delete', None)
+
         if request.form.get('hot_word') is not None:
             hot_word = request.form.get('hot_word')
+
 
 
         else:
@@ -124,7 +128,8 @@ def api():
         app.logger.error(f'[api]error: {e}')
         return jsonify({'code': 2, 'msg': str(e)})
     finally:
-        os.remove(source_file)
+        if is_delete is None:
+            os.remove(source_file)
 
 
 if __name__ == '__main__':

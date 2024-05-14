@@ -376,6 +376,7 @@
               return process(file, {
                 ...field,
                 wav_name: file.data,
+                is_delete : 1
               }).then(function (res) {
                 $('.res-placeholder').hide()
                 $("#export-btn").removeClass("layui-btn-disabled");
