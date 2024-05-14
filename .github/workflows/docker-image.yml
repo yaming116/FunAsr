@@ -24,7 +24,7 @@ jobs:
     - uses: mr-smithers-excellent/docker-build-push@v6
       name: Build & push Docker image
       with:
-        image: yaming116/funAsr
+        image: yaming116/fun-asr
         labels: |-
           org.opencontainers.image.source=https://github.com/${{ github.repository }}
         tags: ${{ steps.t1.outputs.year }}-${{ steps.t1.outputs.month }}-${{ steps.t1.outputs.day }}, latest
