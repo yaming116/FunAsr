@@ -9,8 +9,8 @@ STATIC_DIR = os.path.join(ROOT_DIR, 'static')
 TMP_DIR = os.path.join(STATIC_DIR, 'tmp')
 # model_conf
 
-# os.environ['MODELSCOPE_CACHE'] = '/funAsr'
-os.environ['MODELSCOPE_CACHE'] = '/Users/sunshanming/localHub'
+os.environ['MODELSCOPE_CACHE'] = '/funAsr'
+# os.environ['MODELSCOPE_CACHE'] = '/Users/sunshanming/localHub'
 model = AutoModel(
     model="iic/speech_seaco_paraformer_large_asr_nat-zh-cn-16k-common-vocab8404-pytorch",
     vad_model="iic/speech_fsmn_vad_zh-cn-16k-common-pytorch",

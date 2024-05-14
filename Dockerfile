@@ -13,8 +13,8 @@ EXPOSE 5001
 
 WORKDIR /funAsr
 
-RUN mkdir -p /funAsr/hub \
-    && cd /funAsr/hub \
+RUN mkdir -p /funAsr/iic \
+    && cd /funAsr/iic \
     && git lfs install \
     && git clone https://www.modelscope.cn/iic/speech_seaco_paraformer_large_asr_nat-zh-cn-16k-common-vocab8404-pytorch.git \
     && git clone https://www.modelscope.cn/iic/speech_fsmn_vad_zh-cn-16k-common-pytorch.git \
