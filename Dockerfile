@@ -9,7 +9,7 @@ RUN apt-get update \
         git \
         wget \
     && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash  \
-    && sudo apt-get install git-lfs=1.0.0 \
+    && apt-get install git-lfs -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 5001
