@@ -1,8 +1,12 @@
 
 from funasr import AutoModel
+import logging
 from flask import Flask, request, render_template, jsonify, send_from_directory
 import os
 from gevent.pywsgi import WSGIServer, WSGIHandler, LoggingLogAdapter
+from logging.handlers import RotatingFileHandler
+import warnings
+warnings.filterwarnings('ignore')
 
 ROOT_DIR = os.getcwd()
 STATIC_DIR = os.path.join(ROOT_DIR, 'static')
@@ -26,6 +30,19 @@ class CustomRequestHandler(WSGIHandler):
 
 
 app = Flask(__name__)
+
+# 配置日志
+app.logger.setLevel(logging.WARNING)  # 设置日志级别为 INFO
+# 创建 RotatingFileHandler 对象，设置写入的文件路径和大小限制
+file_handler = RotatingFileHandler(os.path.join(ROOT_DIR, 'funAsr.log'), maxBytes=1024 * 1024, backupCount=5)
+# 创建日志的格式
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# 设置文件处理器的级别和格式
+file_handler.setLevel(logging.WARNING)
+file_handler.setFormatter(formatter)
+# 将文件处理器添加到日志记录器中
+app.logger.addHandler(file_handler)
+app.logger.addHandler()
 
 
 
