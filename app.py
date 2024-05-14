@@ -42,7 +42,6 @@ file_handler.setLevel(logging.WARNING)
 file_handler.setFormatter(formatter)
 # 将文件处理器添加到日志记录器中
 app.logger.addHandler(file_handler)
-app.logger.addHandler()
 
 
 
