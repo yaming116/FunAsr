@@ -23,11 +23,9 @@ RUN mkdir -p /funAsr/hub \
     && ls -all
 
 RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
-
-#COPY requirements.txt requirements.txt
-RUN pip install flask requests funasr modelscope
-
-
+#RUN pip install flask requests funasr modelscope
 COPY . .
+
+RUN pip install -r requirements.txt
 
 CMD ["python" , "app.py"]
