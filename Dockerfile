@@ -5,7 +5,7 @@ RUN apt-get update \
         ffmpeg curl \
         git \
         wget \
-    && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash  \
+    && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash  \
     && apt-get install git-lfs -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
