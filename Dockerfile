@@ -8,4 +8,4 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD ["python" , "app.py"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
