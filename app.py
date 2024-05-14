@@ -52,8 +52,6 @@ file_handler.setFormatter(formatter)
 # 将文件处理器添加到日志记录器中
 app.logger.addHandler(file_handler)
 
-
-
 @app.route('/static/<path:filename>')
 def static_files(filename):
     return send_from_directory(app.config['STATIC_FOLDER'], filename)
@@ -91,6 +89,7 @@ def upload():
 @app.route('/api',methods=['GET','POST'])
 def api():
     source_file = ''
+    wav_file = ''
     is_delete = None
     try:
         # 获取上传的文件
@@ -113,11 +112,35 @@ def api():
                 audio_file.save(source_file)
 
         noextname, ext = os.path.splitext(source_file)
+        wav_file = os.path.join(TMP_DIR, f'{noextname}.wav')
+        print(f'{wav_file=}')
+        params = [
+            "-i",
+            source_file,
+        ]
+        if not os.path.exists(wav_file) or os.path.getsize(wav_file) == 0:
+            if ext in ['.mp4', '.mov', '.avi', '.mkv', '.mpeg', '.mp3', '.flac']:
+
+                if ext not in ['.mp3', '.flac']:
+                    params.append('-vn')
+                params.append(wav_file)
+                rs = tool.runffmpeg(params)
+                if rs != 'ok':
+                    return jsonify({"code": 1, "msg": rs})
+            elif ext == '.speex':
+                params.append(wav_file)
+                rs = tool.runffmpeg(params)
+                if rs != 'ok':
+                    return jsonify({"code": 1, "msg": rs})
+            elif ext == '.wav':
+                wav_file = source_file
+            else:
+                return jsonify({"code": 1, "msg": f"格式不支持 {ext}"})
+        print(f'{ext=}')
         print(f'{source_file=}')
 
-
         res = model.generate(
-            input= source_file,
+            input= wav_file,
             hotword=hot_word,
         )
         return jsonify({"code": 0, "msg": 'ok', "data": res, 'filename': f'{noextname}{ext}'})
@@ -127,7 +150,10 @@ def api():
         return jsonify({'code': 2, 'msg': str(e)})
     finally:
         if is_delete is None:
-            os.remove(source_file)
+            if os.path.exists(wav_file):
+                os.remove(source_file)
+            if os.path.exists(source_file):
+                os.remove(source_file)
 
 
 if __name__ == '__main__':
