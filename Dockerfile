@@ -1,4 +1,18 @@
-FROM yaming116/fun-asr:latest
+FROM python:3.11.9-slim-bullseye
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ffmpeg curl \
+        git \
+        wget \
+    && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash  \
+    && apt-get install git-lfs -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /models && chmod -R 777 /models
+
+
+RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
 
 EXPOSE 5001
 
@@ -8,4 +22,5 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+
+CMD ["python" , "app.py"]

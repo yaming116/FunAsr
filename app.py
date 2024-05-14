@@ -11,10 +11,20 @@ warnings.filterwarnings('ignore')
 ROOT_DIR = os.getcwd()
 STATIC_DIR = os.path.join(ROOT_DIR, 'static')
 TMP_DIR = os.path.join(STATIC_DIR, 'tmp')
-# model_conf
 
-os.environ['MODELSCOPE_CACHE'] = '/funAsr'
+
+os.environ['MODELSCOPE_CACHE'] = '/models'
 # os.environ['MODELSCOPE_CACHE'] = '/Users/sunshanming/localHub'
+
+log = logging.getLogger('werkzeug')
+log.handlers[:] = []
+log.setLevel(logging.WARNING)
+
+root_log = logging.getLogger()  # Flask的根日志记录器
+root_log.handlers = []
+root_log.setLevel(logging.WARNING)
+
+# model_conf
 model = AutoModel(
     model="iic/speech_seaco_paraformer_large_asr_nat-zh-cn-16k-common-vocab8404-pytorch",
     vad_model="iic/speech_fsmn_vad_zh-cn-16k-common-pytorch",
@@ -85,9 +95,13 @@ def api():
     try:
         # 获取上传的文件
 
-        audio_file = None
+        hot_word ='打开 关闭 状态'
         if request.form.get('wav_name') is not None:
             source_file = os.path.join(TMP_DIR, request.form.get('wav_name') )
+
+        if request.form.get('hot_word') is not None:
+            hot_word = request.form.get('hot_word')
+
 
         else:
             audio_file = request.files.get("file") or request.form.get("file")
@@ -103,7 +117,7 @@ def api():
 
         res = model.generate(
             input= source_file,
-            hotword="达摩院 磨搭",
+            hotword=hot_word,
         )
         return jsonify({"code": 0, "msg": 'ok', "data": res, 'filename': f'{noextname}{ext}'})
     except Exception as e:
@@ -118,7 +132,7 @@ if __name__ == '__main__':
     http_server = None
     try:
         try:
-            web_address = '0.0.0.0:5001'
+            web_address = '0.0.0.0:5002'
             host = web_address.split(':')
             http_server = WSGIServer((host[0], int(host[1])), app, handler_class=CustomRequestHandler)
 
