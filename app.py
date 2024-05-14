@@ -96,16 +96,14 @@ def api():
         # 获取上传的文件
 
         hot_word ='打开 关闭 状态'
-        if request.form.get('wav_name') is not None:
-            source_file = os.path.join(TMP_DIR, request.form.get('wav_name') )
 
         is_delete = request.form.get('is_delete', None)
 
         if request.form.get('hot_word') is not None:
             hot_word = request.form.get('hot_word')
 
-
-
+        if request.form.get('wav_name') is not None:
+            source_file = os.path.join(TMP_DIR, request.form.get('wav_name') )
         else:
             audio_file = request.files.get("file") or request.form.get("file")
             noextname, ext = os.path.splitext(audio_file.filename)

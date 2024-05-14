@@ -1,5 +1,5 @@
-FROM yaming116/touch-base:latest
-
+#FROM yaming116/touch-base:latest
+FROM registry.cn-hangzhou.aliyuncs.com/funasr_repo/funasr:funasr-runtime-sdk-cpu-0.4.4
 
 RUN mkdir -p /models && chmod -R 777 /models
 
