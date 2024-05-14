@@ -22,10 +22,11 @@ RUN mkdir -p /funAsr/hub \
     && git clone https://www.modelscope.cn/iic/speech_campplus_sv_zh-cn_16k-common.git \
     && ls -all
 
+RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
+
 #COPY requirements.txt requirements.txt
 RUN pip install flask requests funasr modelscope
 
-RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
 
 COPY . .
 
