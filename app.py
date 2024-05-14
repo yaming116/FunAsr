@@ -6,6 +6,7 @@ import os
 from gevent.pywsgi import WSGIServer, WSGIHandler, LoggingLogAdapter
 from logging.handlers import RotatingFileHandler
 import warnings
+import tools
 warnings.filterwarnings('ignore')
 
 ROOT_DIR = os.getcwd()
@@ -124,12 +125,12 @@ def api():
                 if ext not in ['.mp3', '.flac']:
                     params.append('-vn')
                 params.append(wav_file)
-                rs = tool.runffmpeg(params)
+                rs = tools.runffmpeg(params)
                 if rs != 'ok':
                     return jsonify({"code": 1, "msg": rs})
             elif ext == '.speex':
                 params.append(wav_file)
-                rs = tool.runffmpeg(params)
+                rs = tools.runffmpeg(params)
                 if rs != 'ok':
                     return jsonify({"code": 1, "msg": rs})
             elif ext == '.wav':
