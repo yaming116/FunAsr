@@ -1,0 +1,35 @@
+name: Docker Image Base CI
+
+on:
+  watch:
+    types: [started]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      name: Check out code
+    - name: Test1
+      id: t1
+      uses: Kaven-Universe/github-action-current-date-time@v1
+      with:
+        format: "yyyy-MM-dd"
+
+    - uses: mr-smithers-excellent/docker-build-push@v6
+      name: Build & push Docker image
+      with:
+        image: yaming116/touch-base
+        labels: |-
+          org.opencontainers.image.source=https://github.com/${{ github.repository }}
+        tags: ${{ steps.t1.outputs.year }}-${{ steps.t1.outputs.month }}-${{ steps.t1.outputs.day }}, latest
+        registry: docker.io
+        dockerfile: Dockerfile
+        multiPlatform: true
+        platform: linux/amd64,linux/arm64
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+  
