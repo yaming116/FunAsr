@@ -132,7 +132,7 @@ if __name__ == '__main__':
     http_server = None
     try:
         try:
-            web_address = '0.0.0.0:5002'
+            web_address = '0.0.0.0:5001'
             host = web_address.split(':')
             http_server = WSGIServer((host[0], int(host[1])), app, handler_class=CustomRequestHandler)
 
