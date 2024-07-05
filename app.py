@@ -7,11 +7,15 @@ from gevent.pywsgi import WSGIServer, WSGIHandler, LoggingLogAdapter
 from logging.handlers import RotatingFileHandler
 import warnings
 import tools
+import kaldifst
+
+
 warnings.filterwarnings('ignore')
 
 ROOT_DIR = os.getcwd()
 STATIC_DIR = os.path.join(ROOT_DIR, 'static')
 TMP_DIR = os.path.join(STATIC_DIR, 'tmp')
+RULE_DIR = os.path.join(STATIC_DIR, 'rules')
 
 
 os.environ['MODELSCOPE_CACHE'] = '/models'
@@ -32,6 +36,19 @@ model = AutoModel(
     punc_model="iic/punc_ct-transformer_zh-cn-common-vocab272727-pytorch",
     device='cpu'
 )
+
+r = os.getenv('RULE', 'on')
+rules = ''
+normalizer = None
+
+if r == 'on':
+    rules = os.path.join(RULE_DIR, 'itn_zh_number.fst')
+
+    if not os.path.exists(rules) :
+        rules = ''
+    else:
+        InverseTextNormalizer = kaldifst.TextNormalizer
+        normalizer = InverseTextNormalizer(rules)
 
 
 class CustomRequestHandler(WSGIHandler):
@@ -144,6 +161,10 @@ def api():
             input= wav_file,
             hotword=hot_word,
         )
+
+        if rules != '' and normalizer is not None:
+            res[0]['text'] = normalizer(res[0]['text'])
+
         return jsonify({"code": 0, "msg": 'ok', "data": res, 'filename': f'{noextname}{ext}'})
     except Exception as e:
         print(e)

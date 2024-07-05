@@ -3,3 +3,4 @@ fastapi>=0.95.1
 requests
 flask
 gevent
+kaldifst
